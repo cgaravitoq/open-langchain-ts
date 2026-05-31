@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "ignoreDeprecations": "6.0",
+    "noEmit": true,
+    "types": ["bun"]
+  },
+  "include": ["src/**/*.ts"]
+}
