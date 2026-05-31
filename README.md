@@ -93,13 +93,20 @@ an OpenAI-compatible endpoint. The `langchain-pi-ts/opencode` subpath ships a
 opencode auto-provisions into `~/.local/share/opencode/auth.json`. Requires
 `@langchain/openai` (optional peer dependency).
 
+Free models work **two ways** — with or without an API key:
+
+- **No key** → the anonymous IP-rate-limited trial (works out of the box).
+- **With a key** (auto-read from `auth.json`, or `OPENCODE_API_KEY` / `apiKey`) → higher limits.
+
+Paid models require a key.
+
 ```ts
 import { ChatOpencode } from "langchain-pi-ts/opencode";
 
-// Free models work with no key (anonymous IP-limited trial):
+// Free — no key needed (anonymous), or auto-uses a key if present for higher limits:
 const free = new ChatOpencode({ model: "deepseek-v4-flash-free" });
 
-// A key (auto-read, or OPENCODE_API_KEY / apiKey) unlocks paid models + higher limits:
+// Paid — requires a key (auto-read or explicit apiKey):
 const paid = new ChatOpencode({ model: "glm-5" });
 const go = new ChatOpencode({ model: "glm-5", tier: "go" });
 ```

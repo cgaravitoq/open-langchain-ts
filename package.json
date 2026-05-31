@@ -1,6 +1,6 @@
 {
   "name": "langchain-pi-ts",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "LangChain BaseChatModel adapter for @earendil-works/pi-ai — use Pi with any provider, model and auth. Includes a native opencode/Zen chat model (no pi).",
   "type": "module",
   "types": "./dist/index.d.ts",
