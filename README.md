@@ -20,6 +20,19 @@ and pi-coding-agent).
 
 ## Usage
 
+`createChat` is the simplest entry — pass a provider and it routes to the right
+backend (`opencode`/`opencode-go` → native Zen, everything else → Pi):
+
+```ts
+import { createChat } from "langchain-pi-ts";
+
+const free = createChat({ provider: "opencode", model: "deepseek-v4-flash-free" }); // free, no key
+const go = createChat({ provider: "opencode-go", model: "glm-5", apiKey: "..." }); // subscription
+const codex = createChat({ provider: "openai-codex", model: "gpt-5.3-codex-spark" }); // via Pi
+```
+
+Or construct a backend directly:
+
 ```ts
 import { ChatPi } from "langchain-pi-ts";
 
@@ -74,8 +87,7 @@ For OpenCode Zen, prefer the native `ChatOpencode` below.
 
 [OpenCode Zen](https://opencode.ai/docs/zen/) is an OpenAI-compatible endpoint, so
 you don't need Pi. The `langchain-pi-ts/opencode` subpath ships `ChatOpencode`, a
-thin `ChatOpenAI` subclass pointed at it. Requires `@langchain/openai` (optional
-peer dependency).
+thin `ChatOpenAI` subclass pointed at it (`@langchain/openai` ships as a dependency).
 
 The API key is **optional**: free models work with no key (anonymous, IP-rate-
 limited). For paid models pass a key via `OPENCODE_API_KEY` (env) or `apiKey`.
