@@ -5,7 +5,7 @@
     {
       "name": "open-langchain-ts",
       "type": "git",
-      "url": "https://github.com/cgaravitoq/langchain-pi-ts",
+      "url": "https://github.com/cgaravitoq/open-langchain-ts",
       "branch": "main",
       "specialNotes": "This repo (to be renamed open-langchain-ts): native LangChain BaseChatModel adapters with no Pi. ChatClaudeCode (claude-code-chat.ts + claude-code/conversions.ts), ChatCodex (codex-chat.ts + codex/*), ChatOpencode (opencode-chat.ts), createChat router. Claude Code creds/signing/betas/transforms come from @cgaravitoq/claude-code-core."
     },
@@ -17,9 +17,9 @@
       "specialNotes": "Shared core for the claude-code provider. Update OAuth refresh / billing header / betas / transforms there, not here."
     },
     {
-      "name": "langchain-pi",
+      "name": "open-langchain",
       "type": "git",
-      "url": "https://github.com/cgaravitoq/langchain-pi",
+      "url": "https://github.com/cgaravitoq/open-langchain",
       "branch": "main",
       "specialNotes": "Python twin (to be renamed open-langchain). ChatCodex was ported to TS from langchain_pi/{auth,client,codex_conversions,models,chat_models}.py — keep the two in sync when the Codex responses API / OAuth flow changes."
     },

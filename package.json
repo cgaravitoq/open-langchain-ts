@@ -1,5 +1,5 @@
 {
-  "name": "langchain-pi-ts",
+  "name": "@cgaravitoq/open-langchain-ts",
   "version": "0.5.1",
   "description": "Native LangChain BaseChatModel adapters for the Claude Code OAuth subscription (Anthropic) and opencode/Zen — no Pi, no API key.",
   "type": "module",
@@ -52,11 +52,11 @@
   "author": "cgaravitoq",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cgaravitoq/langchain-pi-ts.git"
+    "url": "git+https://github.com/cgaravitoq/open-langchain-ts.git"
   },
-  "homepage": "https://github.com/cgaravitoq/langchain-pi-ts#readme",
+  "homepage": "https://github.com/cgaravitoq/open-langchain-ts#readme",
   "bugs": {
-    "url": "https://github.com/cgaravitoq/langchain-pi-ts/issues"
+    "url": "https://github.com/cgaravitoq/open-langchain-ts/issues"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.91.1",

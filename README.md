@@ -1,58 +1,40 @@
-# langchain-pi-ts
+# @cgaravitoq/open-langchain-ts
 
-A LangChain [`BaseChatModel`](https://js.langchain.com/) adapter for
-[`@earendil-works/pi-ai`](https://www.npmjs.com/package/@earendil-works/pi-ai).
-Use **Pi** — and any provider, model and credential it resolves — from LangChain
-and LangGraph, with native tool calling and streaming.
+Native LangChain [`BaseChatModel`](https://js.langchain.com/) adapters for coding-agent
+subscriptions — **no Pi, no API key**:
 
-> The TypeScript half of a pair. A Python twin (`langchain-pi`) reuses the same
-> Pi configuration from LangChain/LangGraph in Python.
+- **`ChatClaudeCode`** — Anthropic Messages API billed against your Claude Code OAuth subscription.
+- **`ChatCodex`** — OpenAI Codex (ChatGPT Plus/Pro) over the responses API.
+- **`ChatOpencode`** — [OpenCode Zen](https://opencode.ai/docs/zen/), an OpenAI-compatible endpoint.
+
+Tool calling and streaming work across all three. The TypeScript half of a pair; a Python
+twin ([`open-langchain`](https://github.com/cgaravitoq/open-langchain)) ships the same models.
 
 ## Install
 
 ```sh
-npm install langchain-pi-ts @langchain/core
+npm install @cgaravitoq/open-langchain-ts @langchain/core
 ```
 
-`@langchain/core` is a **peer dependency** — your app owns its version (`^1.1.44`).
-The package is **ESM-only** and requires **Node >= 22.19.0** (inherited from pi-ai
-and pi-coding-agent).
+`@langchain/core` is a **peer dependency** (`^1.1.44`). ESM-only, **Node >= 22.19.0**.
 
 ## Usage
 
-`createChat` is the simplest entry — pass a provider and it routes to the right
-backend (`opencode`/`opencode-go` → native Zen, `claude-code` → native Anthropic,
-everything else → Pi):
+`createChat` routes by provider:
 
 ```ts
-import { createChat } from "langchain-pi-ts";
+import { createChat } from "@cgaravitoq/open-langchain-ts";
 
-const free = createChat({ provider: "opencode", model: "deepseek-v4-flash-free" }); // free, no key
-const go = createChat({ provider: "opencode-go", model: "glm-5", apiKey: "..." }); // subscription
-const codex = createChat({ provider: "openai-codex", model: "gpt-5.3-codex-spark" }); // via Pi
-const claude = createChat({ provider: "claude-code", model: "claude-sonnet-4-6" }); // Claude Code subscription
+const free = createChat({ provider: "opencode", model: "deepseek-v4-flash-free" }); // no key
+const go = createChat({ provider: "opencode-go", model: "glm-5", apiKey: "..." });
+const codex = createChat({ provider: "openai-codex", model: "gpt-5.3-codex-spark" });
+const claude = createChat({ provider: "claude-code", model: "claude-sonnet-4-6" });
 ```
 
-Or construct a backend directly:
+Unknown providers throw. Or import a model directly from its subpath
+(`/claude-code`, `/codex`, `/opencode`).
 
-```ts
-import { ChatPi } from "langchain-pi-ts";
-
-const model = new ChatPi({
-  provider: "openai-codex",
-  modelId: "gpt-5.3-codex-spark",
-  reasoning: "minimal",
-  system: "You are a helpful assistant.",
-});
-
-const res = await model.invoke("Hello!");
-console.log(res.content);
-```
-
-### Tool calling
-
-`ChatPi` accepts any LangChain tool (Zod / `tool()`); schemas are converted to the
-JSON Schema pi-ai expects.
+### Tool calling & streaming
 
 ```ts
 import { tool } from "@langchain/core/tools";
@@ -64,76 +46,55 @@ const getWeather = tool(({ city }) => `Sunny in ${city}.`, {
   schema: z.object({ city: z.string() }),
 });
 
+const model = createChat({ provider: "claude-code", model: "claude-sonnet-4-6" });
 const withTools = model.bindTools([getWeather]);
-```
 
-### Streaming
-
-```ts
 for await (const chunk of await model.stream("Write a haiku.")) {
   process.stdout.write(chunk.content as string);
 }
 ```
 
-### Credentials
-
-Models and credentials resolve through pi-coding-agent's `ModelRegistry` /
-`AuthStorage`. Any provider authenticated in `~/.pi` works with no key. `ChatPi`
-lazily builds a shared registry on first use (importing the package touches no
-filesystem); pass a custom one via `new ChatPi({ provider, modelId, registry })`,
-or `getDefaultAuthStorage().setRuntimeApiKey(provider, key)` to inject a key.
-
-For OpenCode Zen, prefer the native `ChatOpencode` below.
-
-## Native opencode/Zen (no Pi)
-
-[OpenCode Zen](https://opencode.ai/docs/zen/) is an OpenAI-compatible endpoint, so
-you don't need Pi. The `langchain-pi-ts/opencode` subpath ships `ChatOpencode`, a
-thin `ChatOpenAI` subclass pointed at it (`@langchain/openai` ships as a dependency).
-
-The API key is **optional**: free models work with no key (anonymous, IP-rate-
-limited). For paid models pass a key via `OPENCODE_API_KEY` (env) or `apiKey`.
+## Claude Code (Anthropic subscription)
 
 ```ts
-import { ChatOpencode } from "langchain-pi-ts/opencode";
+import { ChatClaudeCode } from "@cgaravitoq/open-langchain-ts/claude-code";
+
+const opus = new ChatClaudeCode({ model: "claude-opus-4-8", reasoning: "medium" });
+```
+
+Reads the Claude Code OAuth session at `~/.claude/.credentials.json` (log in once with the
+`claude` CLI). Models: `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-4-6`,
+`claude-haiku-4-5`. Adaptive thinking on Opus 4.8/4.7; the 1M-context beta is opt-in via
+`longContext: true`. The native Claude Code stack (OAuth refresh, signed billing header,
+betas, payload transforms) lives in [`@cgaravitoq/claude-code-core`](https://github.com/cgaravitoq/claude-code-core).
+
+## OpenAI Codex (ChatGPT subscription)
+
+```ts
+import { ChatCodex } from "@cgaravitoq/open-langchain-ts/codex";
+
+const codex = new ChatCodex({ model: "gpt-5.4", reasoning: "low" });
+```
+
+Reads the Codex OAuth session at `~/.pi/agent/auth.json` (sign in via `pi` or the Python
+twin's `codex-login`). Models: `gpt-5.2`, `gpt-5.3-codex`, `gpt-5.3-codex-spark`, `gpt-5.4`,
+`gpt-5.4-mini`, `gpt-5.5`.
+
+## OpenCode Zen
+
+```ts
+import { ChatOpencode } from "@cgaravitoq/open-langchain-ts/opencode";
 
 const free = new ChatOpencode({ model: "deepseek-v4-flash-free" }); // no key
 const paid = new ChatOpencode({ model: "glm-5" }); // OPENCODE_API_KEY or apiKey
-const go = new ChatOpencode({ model: "glm-5", tier: "go" });
 ```
-
-Free models: `deepseek-v4-flash-free`, `big-pickle`, `mimo-v2.5-free`, `nemotron-3-super-free`.
-
-## Claude Code / Anthropic subscription (no Pi)
-
-`ChatClaudeCode` talks to the Anthropic Messages API (via `@anthropic-ai/sdk`)
-authenticated with the Claude Code OAuth session already on the machine
-(`~/.claude/.credentials.json`), billing requests against your Claude Code
-subscription — no API key. It needs the Claude Code CLI logged in once. The
-`langchain-pi-ts/claude-code` subpath ships it.
-
-```ts
-import { ChatClaudeCode } from "langchain-pi-ts/claude-code";
-
-const chat = new ChatClaudeCode({ model: "claude-sonnet-4-6" });
-const opus = new ChatClaudeCode({ model: "claude-opus-4-8", reasoning: "medium" });
-// or: createChat({ provider: "claude-code", model: "claude-opus-4-8" })
-```
-
-Models: `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-4-6`,
-`claude-haiku-4-5`. Adaptive thinking on Opus 4.8/4.7, a token budget on Sonnet
-4.6 (Haiku has no reasoning). The 1M-context beta is opt-in via
-`longContext: true`; the subscription rejects long-context requests without extra
-credits otherwise. Tool calling and streaming work as with `ChatPi`.
-
-Using a subscription OAuth session from a third-party app may violate Anthropic's
-terms and risk your account — see the
-[`pi-claude-code-auth`](https://github.com/cgaravitoq/pi-claude-code-auth) README.
 
 ## Notes
 
-- ESM + Node only. pi-ai / pi-coding-agent are ESM-only and Node-native.
-- Tool-call deltas and usage/cost metadata are preserved.
+Using a subscription OAuth session from a third-party app may violate the provider's terms
+and risk your account. See the
+[`pi-claude-code-auth`](https://github.com/cgaravitoq/pi-claude-code-auth) README for the
+Claude Code caveats.
 
 ## License
 
