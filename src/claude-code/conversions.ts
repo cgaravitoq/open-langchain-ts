@@ -5,7 +5,7 @@ import type {
   ToolMessage,
 } from "@langchain/core/messages";
 import { convertToOpenAITool } from "@langchain/core/utils/function_calling";
-import { getModelOverride } from "./model-config";
+import { getModelOverride } from "@cgaravitoq/claude-code-core";
 
 type AnyBlock = Record<string, unknown>;
 export type AnthropicMessage = {

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://btca.dev/btca.schema.json",
+  "dataDirectory": ".btca",
+  "resources": [
+    {
+      "name": "open-langchain-ts",
+      "type": "git",
+      "url": "https://github.com/cgaravitoq/langchain-pi-ts",
+      "branch": "main",
+      "specialNotes": "This repo (to be renamed open-langchain-ts): native LangChain BaseChatModel adapters with no Pi. ChatClaudeCode (claude-code-chat.ts + claude-code/conversions.ts), ChatCodex (codex-chat.ts + codex/*), ChatOpencode (opencode-chat.ts), createChat router. Claude Code creds/signing/betas/transforms come from @cgaravitoq/claude-code-core."
+    },
+    {
+      "name": "claude-code-core",
+      "type": "git",
+      "url": "https://github.com/cgaravitoq/claude-code-core",
+      "branch": "main",
+      "specialNotes": "Shared core for the claude-code provider. Update OAuth refresh / billing header / betas / transforms there, not here."
+    },
+    {
+      "name": "langchain-pi",
+      "type": "git",
+      "url": "https://github.com/cgaravitoq/langchain-pi",
+      "branch": "main",
+      "specialNotes": "Python twin (to be renamed open-langchain). ChatCodex was ported to TS from langchain_pi/{auth,client,codex_conversions,models,chat_models}.py — keep the two in sync when the Codex responses API / OAuth flow changes."
+    },
+    {
+      "name": "anthropic-sdk",
+      "type": "npm",
+      "package": "@anthropic-ai/sdk",
+      "specialNotes": "Used by ChatClaudeCode for the Anthropic messages stream. Reference for message params and streaming events."
+    },
+    {
+      "name": "langchain-core",
+      "type": "npm",
+      "package": "@langchain/core",
+      "specialNotes": "BaseChatModel, messages, outputs, tool conversion (convertToOpenAITool), runnable contracts implemented by every adapter here."
+    }
+  ]
+}

@@ -11,10 +11,15 @@ import {
   toAnthropic,
   toAnthropicTools,
 } from "./conversions";
-import { computeBetas, getModelOverride, requestBetas } from "./model-config";
+import {
+  applyClaudeCodeTransforms,
+  buildBillingHeaderValue,
+  computeBetas,
+  getModelOverride,
+  requestBetas,
+  unprefixToolName,
+} from "@cgaravitoq/claude-code-core";
 import { CLAUDE_CODE_MODELS, findClaudeCodeModel } from "./models";
-import { buildBillingHeaderValue } from "./signing";
-import { applyClaudeCodeTransforms, unprefixToolName } from "./transforms";
 
 const HEADER_RE =
   /^x-anthropic-billing-header: cc_version=\d+\.\d+\.\d+\.[a-f0-9]{3}; cc_entrypoint=[^;]+; cch=[a-f0-9]{5};$/;

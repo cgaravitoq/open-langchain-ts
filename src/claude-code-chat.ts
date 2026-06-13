@@ -27,21 +27,20 @@ import {
   usageMetadata,
 } from "./claude-code/conversions";
 import {
+  applyClaudeCodeTransforms,
   type ClaudeCodeCreds,
+  config,
   forceRefreshClaudeCodeCreds,
   readClaudeCodeCreds,
   refreshClaudeCodeCreds,
-} from "./claude-code/creds";
-import { config, requestBetas } from "./claude-code/model-config";
+  requestBetas,
+  SYSTEM_IDENTITY,
+  unprefixToolName,
+} from "@cgaravitoq/claude-code-core";
 import {
   CLAUDE_CODE_BASE_URL,
   findClaudeCodeModel,
 } from "./claude-code/models";
-import {
-  applyClaudeCodeTransforms,
-  SYSTEM_IDENTITY,
-  unprefixToolName,
-} from "./claude-code/transforms";
 
 export type ReasoningLevel =
   | "minimal"
