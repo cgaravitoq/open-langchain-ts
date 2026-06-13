@@ -84,7 +84,8 @@ export function normalizeEvent(payload: AnyRecord): CodexEvent | null {
     return {
       type: "done",
       usage: response.usage as AnyRecord | undefined,
-      stop_reason: (response.status as string) ?? etype,
+      // Match Python's `status or etype`: an empty status falls back to the event type.
+      stop_reason: (response.status as string) || etype,
     };
   }
   if (etype === "error" || etype === "response.failed") {
