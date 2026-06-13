@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.91.1",
-    "@cgaravitoq/claude-code-core": "file:../claude-code-core",
+    "@cgaravitoq/claude-code-core": "^0.1.0",
     "@langchain/openai": "^1.4.7"
   },
   "peerDependencies": {
