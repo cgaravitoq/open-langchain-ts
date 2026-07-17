@@ -11,7 +11,10 @@ export type ChatOpencodeFields = Omit<ChatOpenAIFields, "configuration"> & {
 // The free tier is anonymous: the Zen API accepts requests with no Authorization
 // header. The OpenAI SDK always derives `Authorization: Bearer <apiKey>` and won't
 // drop it via a null default header, so strip it with a custom fetch.
-const stripAuthFetch = ((input: Parameters<typeof fetch>[0], init?: RequestInit) => {
+const stripAuthFetch = ((
+  input: Parameters<typeof fetch>[0],
+  init?: RequestInit,
+) => {
   const headers = new Headers(init?.headers ?? {});
   headers.delete("authorization");
   return fetch(input, { ...init, headers });

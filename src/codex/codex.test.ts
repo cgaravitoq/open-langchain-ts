@@ -20,8 +20,8 @@ import {
   applyStop,
   buildRequestBody,
   messagesToResponses,
-  toToolCalls,
   toolToResponses,
+  toToolCalls,
 } from "./conversions";
 import {
   clampThinkingLevel,
@@ -54,7 +54,10 @@ function makeAuthFile(): { authPath: string; cleanup: () => void } {
       },
     }),
   );
-  return { authPath, cleanup: () => rmSync(dir, { recursive: true, force: true }) };
+  return {
+    authPath,
+    cleanup: () => rmSync(dir, { recursive: true, force: true }),
+  };
 }
 
 const originalFetch = globalThis.fetch;
@@ -100,7 +103,9 @@ describe("conversions", () => {
     const { input } = messagesToResponses([
       new AIMessage({
         content: "ok",
-        tool_calls: [{ name: "f", args: { a: 1 }, id: "c1", type: "tool_call" }],
+        tool_calls: [
+          { name: "f", args: { a: 1 }, id: "c1", type: "tool_call" },
+        ],
       }),
     ]);
     expect(input[0]).toEqual({
@@ -160,7 +165,11 @@ describe("conversions", () => {
   });
 
   test("buildRequestBody defaults tool_choice to auto", () => {
-    const body = buildRequestBody({ model: "gpt-5.4", instructions: "i", input: [] });
+    const body = buildRequestBody({
+      model: "gpt-5.4",
+      instructions: "i",
+      input: [],
+    });
     expect(body.tool_choice).toBe("auto");
   });
 
@@ -195,10 +204,10 @@ describe("conversions", () => {
 
 describe("models", () => {
   test("thinking wire values", () => {
-    expect(thinkingWireValue("gpt-5.3-codex", "minimal")).toBe("low");
-    expect(thinkingWireValue("gpt-5.3-codex", "high")).toBe("high");
-    expect(thinkingWireValue("gpt-5.3-codex", "xhigh")).toBe("xhigh");
-    expect(thinkingWireValue("gpt-5.3-codex", "off")).toBeNull();
+    expect(thinkingWireValue("gpt-5.6-sol", "minimal")).toBe("low");
+    expect(thinkingWireValue("gpt-5.6-sol", "high")).toBe("high");
+    expect(thinkingWireValue("gpt-5.6-sol", "xhigh")).toBe("xhigh");
+    expect(thinkingWireValue("gpt-5.6-sol", "off")).toBeNull();
   });
 
   test("supported levels and clamp", () => {

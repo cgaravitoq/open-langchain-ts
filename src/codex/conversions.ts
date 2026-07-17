@@ -26,9 +26,7 @@ function contentToText(content: BaseMessage["content"]): string {
 
 export function applyStop(text: string, stop?: string[]): string {
   if (!stop || stop.length === 0) return text;
-  const idxs = stop
-    .map((s) => text.indexOf(s))
-    .filter((i) => i >= 0);
+  const idxs = stop.map((s) => text.indexOf(s)).filter((i) => i >= 0);
   return idxs.length ? text.slice(0, Math.min(...idxs)) : text;
 }
 
@@ -117,9 +115,7 @@ export function messagesToResponses(
     }
   }
   const parts = instructionsParts.filter(Boolean);
-  const instructions = parts.length
-    ? parts.join("\n\n")
-    : DEFAULT_INSTRUCTIONS;
+  const instructions = parts.length ? parts.join("\n\n") : DEFAULT_INSTRUCTIONS;
   return { instructions, input };
 }
 

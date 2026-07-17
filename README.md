@@ -63,9 +63,9 @@ const opus = new ChatClaudeCode({ model: "claude-opus-4-8", reasoning: "medium" 
 ```
 
 Reads the Claude Code OAuth session at `~/.claude/.credentials.json` (log in once with the
-`claude` CLI). Models: `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-4-6`,
-`claude-haiku-4-5`. Adaptive thinking on Opus 4.8/4.7; the 1M-context beta is opt-in via
-`longContext: true`. The native Claude Code stack (OAuth refresh, signed billing header,
+`claude` CLI). Models: `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`,
+`claude-sonnet-5`, `claude-sonnet-4-6`, `claude-haiku-4-5`. Adaptive thinking on the
+Claude 5 family and Opus 4.8/4.7; the 1M-context beta is opt-in via `longContext: true`. The native Claude Code stack (OAuth refresh, signed billing header,
 betas, payload transforms) lives in [`@cgaravitoq/claude-code-core`](https://github.com/cgaravitoq/claude-code-core).
 
 ## OpenAI Codex (ChatGPT subscription)
@@ -77,8 +77,8 @@ const codex = new ChatCodex({ model: "gpt-5.4", reasoning: "low" });
 ```
 
 Reads the Codex OAuth session at `~/.pi/agent/auth.json` (sign in via `pi` or the Python
-twin's `codex-login`). Models: `gpt-5.2`, `gpt-5.3-codex`, `gpt-5.3-codex-spark`, `gpt-5.4`,
-`gpt-5.4-mini`, `gpt-5.5`.
+twin's `codex-login`). Models: `gpt-5.3-codex-spark`, `gpt-5.4`, `gpt-5.4-mini`, `gpt-5.5`,
+`gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`.
 
 ## OpenCode Zen
 

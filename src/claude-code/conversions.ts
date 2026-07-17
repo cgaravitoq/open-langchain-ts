@@ -1,3 +1,4 @@
+import { getModelOverride } from "@cgaravitoq/claude-code-core";
 import type { BindToolsInput } from "@langchain/core/language_models/chat_models";
 import type {
   AIMessage,
@@ -5,7 +6,6 @@ import type {
   ToolMessage,
 } from "@langchain/core/messages";
 import { convertToOpenAITool } from "@langchain/core/utils/function_calling";
-import { getModelOverride } from "@cgaravitoq/claude-code-core";
 
 type AnyBlock = Record<string, unknown>;
 export type AnthropicMessage = {
@@ -26,6 +26,10 @@ export function toEffort(level: string): string {
   return level === "minimal" ? "low" : level;
 }
 
+// claude-code-core@0.1.0 predates the Claude 5 family, so its override table
+// misses them; without this they'd get budget_tokens, which 400s on Claude 5.
+const CLAUDE_5_ADAPTIVE = /fable-5|mythos-5|sonnet-5/;
+
 export function buildThinking(
   modelId: string,
   reasoning: string | undefined,
@@ -33,7 +37,7 @@ export function buildThinking(
 ): { thinking?: object; output_config?: object } {
   if (!reasoning || !modelSupportsReasoning) return {};
   const override = getModelOverride(modelId);
-  if (override?.adaptiveThinking) {
+  if (override?.adaptiveThinking || CLAUDE_5_ADAPTIVE.test(modelId)) {
     // Opus 4.8/4.7 reject a manual budget_tokens with a 400.
     return {
       thinking: { type: "adaptive" },

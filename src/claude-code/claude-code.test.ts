@@ -1,5 +1,13 @@
 import { describe, expect, test } from "bun:test";
 import {
+  applyClaudeCodeTransforms,
+  buildBillingHeaderValue,
+  computeBetas,
+  getModelOverride,
+  requestBetas,
+  unprefixToolName,
+} from "@cgaravitoq/claude-code-core";
+import {
   AIMessage,
   HumanMessage,
   SystemMessage,
@@ -11,14 +19,6 @@ import {
   toAnthropic,
   toAnthropicTools,
 } from "./conversions";
-import {
-  applyClaudeCodeTransforms,
-  buildBillingHeaderValue,
-  computeBetas,
-  getModelOverride,
-  requestBetas,
-  unprefixToolName,
-} from "@cgaravitoq/claude-code-core";
 import { CLAUDE_CODE_MODELS, findClaudeCodeModel } from "./models";
 
 const HEADER_RE =
@@ -100,13 +100,17 @@ describe("model-config", () => {
 
   test("model registry metadata", () => {
     expect(CLAUDE_CODE_MODELS.map((m) => m.id)).toEqual([
+      "claude-fable-5",
       "claude-opus-4-8",
       "claude-opus-4-7",
+      "claude-sonnet-5",
       "claude-sonnet-4-6",
       "claude-haiku-4-5",
     ]);
     expect(findClaudeCodeModel("claude-haiku-4-5")?.reasoning).toBe(false);
     expect(findClaudeCodeModel("claude-opus-4-8")?.maxTokens).toBe(128000);
+    expect(findClaudeCodeModel("claude-fable-5")?.contextWindow).toBe(1000000);
+    expect(findClaudeCodeModel("claude-sonnet-5")?.reasoning).toBe(true);
   });
 });
 
@@ -124,6 +128,15 @@ describe("thinking", () => {
     ).toEqual({
       effort: "low",
     });
+  });
+
+  test("fable-5 and sonnet-5 use adaptive, no budget_tokens", () => {
+    for (const model of ["claude-fable-5", "claude-sonnet-5"]) {
+      const t = buildThinking(model, "high", true);
+      expect(t.thinking).toEqual({ type: "adaptive" });
+      expect(t.output_config).toEqual({ effort: "high" });
+      expect(JSON.stringify(t)).not.toContain("budget_tokens");
+    }
   });
 
   test("sonnet-4-6 uses budget_tokens, no output_config", () => {

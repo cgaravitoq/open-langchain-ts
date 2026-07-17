@@ -20,10 +20,10 @@ import {
   applyStop,
   buildRequestBody,
   messagesToResponses,
+  toolToResponses,
   toResponseMetadata,
   toToolCalls,
   toUsageMetadata,
-  toolToResponses,
 } from "./codex/conversions";
 import { clampThinkingLevel } from "./codex/models";
 

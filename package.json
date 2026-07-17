@@ -1,6 +1,6 @@
 {
   "name": "@cgaravitoq/open-langchain-ts",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Native LangChain BaseChatModel adapters for the Claude Code OAuth subscription (Anthropic) and opencode/Zen — no Pi, no API key.",
   "type": "module",
   "types": "./dist/index.d.ts",
