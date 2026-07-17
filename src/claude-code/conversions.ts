@@ -26,10 +26,6 @@ export function toEffort(level: string): string {
   return level === "minimal" ? "low" : level;
 }
 
-// claude-code-core@0.1.0 predates the Claude 5 family, so its override table
-// misses them; without this they'd get budget_tokens, which 400s on Claude 5.
-const CLAUDE_5_ADAPTIVE = /fable-5|mythos-5|sonnet-5/;
-
 export function buildThinking(
   modelId: string,
   reasoning: string | undefined,
@@ -37,8 +33,8 @@ export function buildThinking(
 ): { thinking?: object; output_config?: object } {
   if (!reasoning || !modelSupportsReasoning) return {};
   const override = getModelOverride(modelId);
-  if (override?.adaptiveThinking || CLAUDE_5_ADAPTIVE.test(modelId)) {
-    // Opus 4.8/4.7 reject a manual budget_tokens with a 400.
+  if (override?.adaptiveThinking) {
+    // Claude 5 and Opus 4.8/4.7 reject a manual budget_tokens with a 400.
     return {
       thinking: { type: "adaptive" },
       output_config: { effort: toEffort(reasoning) },
