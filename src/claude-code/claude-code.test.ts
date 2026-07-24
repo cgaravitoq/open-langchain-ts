@@ -69,6 +69,12 @@ describe("model-config", () => {
     expect(betas.length).toBe(new Set(betas).size);
   });
 
+  test("opus-5 excludes context-1m (1M context is default)", () => {
+    expect(computeBetas("claude-opus-5")).not.toContain(
+      "context-1m-2025-08-07",
+    );
+  });
+
   test("haiku excludes interleaved-thinking, effort, context-1m", () => {
     const betas = computeBetas("claude-haiku-4-5");
     expect(betas).not.toContain("interleaved-thinking-2025-05-14");
@@ -77,6 +83,7 @@ describe("model-config", () => {
   });
 
   test("override first-match-wins", () => {
+    expect(getModelOverride("claude-opus-5")?.adaptiveThinking).toBe(true);
     expect(getModelOverride("claude-opus-4-8")?.adaptiveThinking).toBe(true);
     expect(
       getModelOverride("claude-sonnet-4-6")?.adaptiveThinking,
@@ -100,6 +107,7 @@ describe("model-config", () => {
 
   test("model registry metadata", () => {
     expect(CLAUDE_CODE_MODELS.map((m) => m.id)).toEqual([
+      "claude-opus-5",
       "claude-fable-5",
       "claude-opus-4-8",
       "claude-opus-4-7",
@@ -130,8 +138,12 @@ describe("thinking", () => {
     });
   });
 
-  test("fable-5 and sonnet-5 use adaptive, no budget_tokens", () => {
-    for (const model of ["claude-fable-5", "claude-sonnet-5"]) {
+  test("opus-5, fable-5 and sonnet-5 use adaptive, no budget_tokens", () => {
+    for (const model of [
+      "claude-opus-5",
+      "claude-fable-5",
+      "claude-sonnet-5",
+    ]) {
       const t = buildThinking(model, "high", true);
       expect(t.thinking).toEqual({ type: "adaptive" });
       expect(t.output_config).toEqual({ effort: "high" });

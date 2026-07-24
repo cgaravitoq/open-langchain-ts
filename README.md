@@ -59,13 +59,16 @@ for await (const chunk of await model.stream("Write a haiku.")) {
 ```ts
 import { ChatClaudeCode } from "@cgaravitoq/open-langchain-ts/claude-code";
 
-const opus = new ChatClaudeCode({ model: "claude-opus-4-8", reasoning: "medium" });
+const opus = new ChatClaudeCode({ model: "claude-opus-5", reasoning: "medium" });
 ```
 
 Reads the Claude Code OAuth session at `~/.claude/.credentials.json` (log in once with the
-`claude` CLI). Models: `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`,
+`claude` CLI). Models: `claude-opus-5`, `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`,
 `claude-sonnet-5`, `claude-sonnet-4-6`, `claude-haiku-4-5`. Adaptive thinking on the
-Claude 5 family and Opus 4.8/4.7; the 1M-context beta is opt-in via `longContext: true`. The native Claude Code stack (OAuth refresh, signed billing header,
+Claude 5 family and Opus 4.8/4.7. The Claude 5 models ship a 1M context window by default;
+for the older models the 1M-context beta is opt-in via `longContext: true`, since the
+subscription rejects long-context requests without extra credits otherwise. The native
+Claude Code stack (OAuth refresh, signed billing header,
 betas, payload transforms) lives in [`@cgaravitoq/claude-code-core`](https://github.com/cgaravitoq/claude-code-core).
 
 ## OpenAI Codex (ChatGPT subscription)

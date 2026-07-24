@@ -16,6 +16,14 @@ export interface ClaudeCodeModel {
 
 export const CLAUDE_CODE_MODELS: ClaudeCodeModel[] = [
   {
+    id: "claude-opus-5",
+    name: "Claude Opus 5 (Claude Code)",
+    reasoning: true,
+    contextWindow: 1000000,
+    maxTokens: 128000,
+    cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
+  },
+  {
     id: "claude-fable-5",
     name: "Claude Fable 5 (Claude Code)",
     reasoning: true,
