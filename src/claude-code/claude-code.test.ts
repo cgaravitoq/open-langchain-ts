@@ -109,6 +109,7 @@ describe("model-config", () => {
     expect(CLAUDE_CODE_MODELS.map((m) => m.id)).toEqual([
       "claude-opus-5",
       "claude-fable-5",
+      "claude-fable-5-1",
       "claude-opus-4-8",
       "claude-opus-4-7",
       "claude-sonnet-5",
@@ -118,7 +119,24 @@ describe("model-config", () => {
     expect(findClaudeCodeModel("claude-haiku-4-5")?.reasoning).toBe(false);
     expect(findClaudeCodeModel("claude-opus-4-8")?.maxTokens).toBe(128000);
     expect(findClaudeCodeModel("claude-fable-5")?.contextWindow).toBe(1000000);
+    expect(findClaudeCodeModel("claude-fable-5-1")?.reasoning).toBe(true);
+    expect(findClaudeCodeModel("claude-fable-5-1")?.contextWindow).toBe(
+      1000000,
+    );
+    expect(findClaudeCodeModel("claude-fable-5-1")?.maxTokens).toBe(128000);
+    expect(findClaudeCodeModel("claude-fable-5-1")?.cost).toEqual({
+      input: 10,
+      output: 50,
+      cacheRead: 0.25,
+      cacheWrite: 12.5,
+    });
     expect(findClaudeCodeModel("claude-sonnet-5")?.reasoning).toBe(true);
+    expect(findClaudeCodeModel("claude-sonnet-5")?.cost).toEqual({
+      input: 2,
+      output: 10,
+      cacheRead: 0.2,
+      cacheWrite: 2.5,
+    });
   });
 });
 
@@ -138,10 +156,11 @@ describe("thinking", () => {
     });
   });
 
-  test("opus-5, fable-5 and sonnet-5 use adaptive, no budget_tokens", () => {
+  test("opus-5, fable-5, fable-5-1 and sonnet-5 use adaptive, no budget_tokens", () => {
     for (const model of [
       "claude-opus-5",
       "claude-fable-5",
+      "claude-fable-5-1",
       "claude-sonnet-5",
     ]) {
       const t = buildThinking(model, "high", true);

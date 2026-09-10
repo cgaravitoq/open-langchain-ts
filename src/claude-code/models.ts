@@ -32,6 +32,14 @@ export const CLAUDE_CODE_MODELS: ClaudeCodeModel[] = [
     cost: { input: 10, output: 50, cacheRead: 1, cacheWrite: 12.5 },
   },
   {
+    id: "claude-fable-5-1",
+    name: "Claude Fable 5.1 (Claude Code)",
+    reasoning: true,
+    contextWindow: 1000000,
+    maxTokens: 128000,
+    cost: { input: 10, output: 50, cacheRead: 0.25, cacheWrite: 12.5 },
+  },
+  {
     id: "claude-opus-4-8",
     name: "Claude Opus 4.8 (Claude Code)",
     reasoning: true,
@@ -53,7 +61,7 @@ export const CLAUDE_CODE_MODELS: ClaudeCodeModel[] = [
     reasoning: true,
     contextWindow: 1000000,
     maxTokens: 128000,
-    cost: { input: 3, output: 15, cacheRead: 0.3, cacheWrite: 3.75 },
+    cost: { input: 2, output: 10, cacheRead: 0.2, cacheWrite: 2.5 },
   },
   {
     id: "claude-sonnet-4-6",
