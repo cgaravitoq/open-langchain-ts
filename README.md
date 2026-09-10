@@ -68,8 +68,8 @@ Reads the Claude Code OAuth session at `~/.claude/.credentials.json` (log in onc
 Claude 5 family and Opus 4.8/4.7. The Claude 5 models ship a 1M context window by default;
 for the older models the 1M-context beta is opt-in via `longContext: true`, since the
 subscription rejects long-context requests without extra credits otherwise. `claude-fable-5-1`
-rejects a forced `tool_choice` (`any` or a named tool) with a 400; the adapter passes
-`tool_choice` through unchanged, so leave the choice to the model. The native
+rejects a forced `tool_choice` (`any` or a named tool) with a 400; this adapter does not
+expose `tool_choice`, so the choice is always left to the model. The native
 Claude Code stack (OAuth refresh, signed billing header,
 betas, payload transforms) lives in [`@cgaravitoq/claude-code-core`](https://github.com/cgaravitoq/claude-code-core).
 
