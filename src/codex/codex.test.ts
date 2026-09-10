@@ -26,6 +26,7 @@ import {
 import {
   clampThinkingLevel,
   getSupportedThinkingLevels,
+  OPENAI_CODEX_MODELS,
   thinkingWireValue,
 } from "./models";
 
@@ -147,7 +148,7 @@ describe("conversions", () => {
 
   test("buildRequestBody shape", () => {
     const body = buildRequestBody({
-      model: "gpt-5.4",
+      model: "gpt-5.5",
       instructions: "i",
       input: [],
       toolChoice: { type: "function", name: "f" },
@@ -166,7 +167,7 @@ describe("conversions", () => {
 
   test("buildRequestBody defaults tool_choice to auto", () => {
     const body = buildRequestBody({
-      model: "gpt-5.4",
+      model: "gpt-5.5",
       instructions: "i",
       input: [],
     });
@@ -175,7 +176,7 @@ describe("conversions", () => {
 
   test("off omits reasoning and cache key", () => {
     const body = buildRequestBody({
-      model: "gpt-5.4",
+      model: "gpt-5.5",
       instructions: "i",
       input: [],
       reasoningEffort: "off",
@@ -203,6 +204,44 @@ describe("conversions", () => {
 });
 
 describe("models", () => {
+  test("catalog matches the ChatGPT account", () => {
+    expect(Object.keys(OPENAI_CODEX_MODELS)).toEqual([
+      "gpt-5.3-codex-spark",
+      "gpt-5.5",
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-5.6-luna",
+      "gpt-6-astra",
+    ]);
+    expect(OPENAI_CODEX_MODELS["gpt-5.4"]).toBeUndefined();
+    expect(OPENAI_CODEX_MODELS["gpt-5.4-mini"]).toBeUndefined();
+    expect(OPENAI_CODEX_MODELS["gpt-5.5"]?.contextWindow).toBe(1050000);
+    expect(OPENAI_CODEX_MODELS["gpt-5.6-sol"]?.cost).toEqual({
+      input: 4,
+      output: 20,
+      cacheRead: 0.4,
+      cacheWrite: 5,
+    });
+    expect(OPENAI_CODEX_MODELS["gpt-5.6-terra"]?.cost).toEqual({
+      input: 2,
+      output: 12,
+      cacheRead: 0.2,
+      cacheWrite: 2.5,
+    });
+    expect(OPENAI_CODEX_MODELS["gpt-5.6-luna"]?.cost).toEqual({
+      input: 0.2,
+      output: 1.2,
+      cacheRead: 0.02,
+      cacheWrite: 0.25,
+    });
+    expect(OPENAI_CODEX_MODELS["gpt-6-astra"]).toEqual({
+      name: "GPT-6 Astra",
+      input: ["text", "image"],
+      contextWindow: 1050000,
+      cost: { input: 10, output: 50, cacheRead: 1, cacheWrite: 12.5 },
+    });
+  });
+
   test("thinking wire values", () => {
     expect(thinkingWireValue("gpt-5.6-sol", "minimal")).toBe("low");
     expect(thinkingWireValue("gpt-5.6-sol", "high")).toBe("high");
@@ -387,7 +426,7 @@ describe("ChatCodex", () => {
         { status: 200 },
       )) as unknown as typeof fetch;
     try {
-      const chat = new ChatCodex({ model: "gpt-5.4", authPath });
+      const chat = new ChatCodex({ model: "gpt-5.5", authPath });
       const res = await chat.invoke([new HumanMessage("hi")]);
       expect(res.content).toBe("Hi there");
     } finally {
