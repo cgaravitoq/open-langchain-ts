@@ -119,8 +119,17 @@ describe("model-config", () => {
     expect(findClaudeCodeModel("claude-haiku-4-5")?.reasoning).toBe(false);
     expect(findClaudeCodeModel("claude-opus-4-8")?.maxTokens).toBe(128000);
     expect(findClaudeCodeModel("claude-fable-5")?.contextWindow).toBe(1000000);
-    expect(findClaudeCodeModel("claude-fable-5-1")?.cost.cacheRead).toBe(0.25);
+    expect(findClaudeCodeModel("claude-fable-5-1")?.reasoning).toBe(true);
+    expect(findClaudeCodeModel("claude-fable-5-1")?.contextWindow).toBe(
+      1000000,
+    );
     expect(findClaudeCodeModel("claude-fable-5-1")?.maxTokens).toBe(128000);
+    expect(findClaudeCodeModel("claude-fable-5-1")?.cost).toEqual({
+      input: 10,
+      output: 50,
+      cacheRead: 0.25,
+      cacheWrite: 12.5,
+    });
     expect(findClaudeCodeModel("claude-sonnet-5")?.reasoning).toBe(true);
     expect(findClaudeCodeModel("claude-sonnet-5")?.cost).toEqual({
       input: 2,
