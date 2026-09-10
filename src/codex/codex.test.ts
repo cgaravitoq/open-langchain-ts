@@ -215,24 +215,38 @@ describe("models", () => {
     ]);
     expect(OPENAI_CODEX_MODELS["gpt-5.4"]).toBeUndefined();
     expect(OPENAI_CODEX_MODELS["gpt-5.4-mini"]).toBeUndefined();
-    expect(OPENAI_CODEX_MODELS["gpt-5.5"]?.contextWindow).toBe(1050000);
-    expect(OPENAI_CODEX_MODELS["gpt-5.6-sol"]?.cost).toEqual({
-      input: 4,
-      output: 20,
-      cacheRead: 0.4,
-      cacheWrite: 5,
+  });
+
+  test("every catalog entry matches models.dev", () => {
+    expect(OPENAI_CODEX_MODELS["gpt-5.3-codex-spark"]).toEqual({
+      name: "GPT-5.3 Codex Spark",
+      input: ["text"],
+      contextWindow: 128000,
+      cost: { input: 1.75, output: 14, cacheRead: 0.175, cacheWrite: 0 },
     });
-    expect(OPENAI_CODEX_MODELS["gpt-5.6-terra"]?.cost).toEqual({
-      input: 2,
-      output: 12,
-      cacheRead: 0.2,
-      cacheWrite: 2.5,
+    expect(OPENAI_CODEX_MODELS["gpt-5.5"]).toEqual({
+      name: "GPT-5.5",
+      input: ["text", "image"],
+      contextWindow: 1050000,
+      cost: { input: 5, output: 30, cacheRead: 0.5, cacheWrite: 0 },
     });
-    expect(OPENAI_CODEX_MODELS["gpt-5.6-luna"]?.cost).toEqual({
-      input: 0.2,
-      output: 1.2,
-      cacheRead: 0.02,
-      cacheWrite: 0.25,
+    expect(OPENAI_CODEX_MODELS["gpt-5.6-sol"]).toEqual({
+      name: "GPT-5.6 Sol",
+      input: ["text", "image"],
+      contextWindow: 1050000,
+      cost: { input: 4, output: 20, cacheRead: 0.4, cacheWrite: 5 },
+    });
+    expect(OPENAI_CODEX_MODELS["gpt-5.6-terra"]).toEqual({
+      name: "GPT-5.6 Terra",
+      input: ["text", "image"],
+      contextWindow: 1050000,
+      cost: { input: 2, output: 12, cacheRead: 0.2, cacheWrite: 2.5 },
+    });
+    expect(OPENAI_CODEX_MODELS["gpt-5.6-luna"]).toEqual({
+      name: "GPT-5.6 Luna",
+      input: ["text", "image"],
+      contextWindow: 1050000,
+      cost: { input: 0.2, output: 1.2, cacheRead: 0.02, cacheWrite: 0.25 },
     });
     expect(OPENAI_CODEX_MODELS["gpt-6-astra"]).toEqual({
       name: "GPT-6 Astra",

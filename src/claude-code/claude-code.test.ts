@@ -105,7 +105,7 @@ describe("model-config", () => {
     );
   });
 
-  test("model registry metadata", () => {
+  test("model registry order", () => {
     expect(CLAUDE_CODE_MODELS.map((m) => m.id)).toEqual([
       "claude-opus-5",
       "claude-fable-5",
@@ -116,26 +116,72 @@ describe("model-config", () => {
       "claude-sonnet-4-6",
       "claude-haiku-4-5",
     ]);
-    expect(findClaudeCodeModel("claude-haiku-4-5")?.reasoning).toBe(false);
-    expect(findClaudeCodeModel("claude-opus-4-8")?.maxTokens).toBe(128000);
-    expect(findClaudeCodeModel("claude-fable-5")?.contextWindow).toBe(1000000);
-    expect(findClaudeCodeModel("claude-fable-5-1")?.reasoning).toBe(true);
-    expect(findClaudeCodeModel("claude-fable-5-1")?.contextWindow).toBe(
-      1000000,
-    );
-    expect(findClaudeCodeModel("claude-fable-5-1")?.maxTokens).toBe(128000);
-    expect(findClaudeCodeModel("claude-fable-5-1")?.cost).toEqual({
-      input: 10,
-      output: 50,
-      cacheRead: 0.25,
-      cacheWrite: 12.5,
+  });
+
+  test("every catalog entry matches models.dev", () => {
+    expect(findClaudeCodeModel("claude-opus-5")).toEqual({
+      id: "claude-opus-5",
+      name: "Claude Opus 5 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
     });
-    expect(findClaudeCodeModel("claude-sonnet-5")?.reasoning).toBe(true);
-    expect(findClaudeCodeModel("claude-sonnet-5")?.cost).toEqual({
-      input: 2,
-      output: 10,
-      cacheRead: 0.2,
-      cacheWrite: 2.5,
+    expect(findClaudeCodeModel("claude-fable-5")).toEqual({
+      id: "claude-fable-5",
+      name: "Claude Fable 5 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 10, output: 50, cacheRead: 1, cacheWrite: 12.5 },
+    });
+    expect(findClaudeCodeModel("claude-fable-5-1")).toEqual({
+      id: "claude-fable-5-1",
+      name: "Claude Fable 5.1 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 10, output: 50, cacheRead: 0.25, cacheWrite: 12.5 },
+    });
+    expect(findClaudeCodeModel("claude-opus-4-8")).toEqual({
+      id: "claude-opus-4-8",
+      name: "Claude Opus 4.8 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
+    });
+    expect(findClaudeCodeModel("claude-opus-4-7")).toEqual({
+      id: "claude-opus-4-7",
+      name: "Claude Opus 4.7 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
+    });
+    expect(findClaudeCodeModel("claude-sonnet-5")).toEqual({
+      id: "claude-sonnet-5",
+      name: "Claude Sonnet 5 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 2, output: 10, cacheRead: 0.2, cacheWrite: 2.5 },
+    });
+    expect(findClaudeCodeModel("claude-sonnet-4-6")).toEqual({
+      id: "claude-sonnet-4-6",
+      name: "Claude Sonnet 4.6 (Claude Code)",
+      reasoning: true,
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 3, output: 15, cacheRead: 0.3, cacheWrite: 3.75 },
+    });
+    expect(findClaudeCodeModel("claude-haiku-4-5")).toEqual({
+      id: "claude-haiku-4-5",
+      name: "Claude Haiku 4.5 (Claude Code)",
+      reasoning: false,
+      contextWindow: 200000,
+      maxTokens: 64000,
+      cost: { input: 1, output: 5, cacheRead: 0.1, cacheWrite: 1.25 },
     });
   });
 });

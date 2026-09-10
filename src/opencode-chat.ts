@@ -15,10 +15,12 @@ export type ChatOpencodeFields = Omit<ChatOpenAIFields, "configuration"> & {
   tier?: "zen" | "go";
 };
 
-// @langchain/openai's getHeadersWithUserAgent prepends `langchainjs-openai/<version>`
-// to any User-Agent in defaultHeaders, so the client identity is set at the fetch layer. The free tier is anonymous: the Zen API accepts requests with no
-// Authorization header, but the OpenAI SDK always derives `Authorization: Bearer
-// <apiKey>` and won't drop it via a null default header, so strip it here too.
+// @langchain/openai's getHeadersWithUserAgent prepends
+// `langchainjs-openai/<version>` to any User-Agent in defaultHeaders, so the
+// client identity is set at the fetch layer. The free tier is anonymous: the
+// Zen API accepts requests with no Authorization header, but the OpenAI SDK
+// always derives `Authorization: Bearer <apiKey>` and won't drop it via a null
+// default header, so strip it here too.
 const zenFetch = (stripAuth: boolean) =>
   ((input: Parameters<typeof fetch>[0], init?: RequestInit) => {
     const headers = new Headers(init?.headers ?? {});
@@ -32,9 +34,11 @@ export class ChatOpencode extends ChatOpenAI {
     const { tier = "zen", apiKey, ...rest } = fields;
     const key = apiKey ?? process.env.OPENCODE_API_KEY;
     const baseURL = tier === "go" ? ZEN_GO_BASE_URL : ZEN_BASE_URL;
-    // Zen binds a session to one client, so the id is per instance, not per request.
+    // Zen binds a session to one client, so the id is per instance, not per
+    // request.
     const sessionId = randomUUID();
-    // No key → anonymous free tier (strip auth header); paid models need a key.
+    // No key → anonymous free tier (strip auth header); paid models need a
+    // key.
     super({
       ...rest,
       apiKey: key ?? "anonymous",
