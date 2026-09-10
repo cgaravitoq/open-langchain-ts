@@ -25,8 +25,8 @@ npm install @cgaravitoq/open-langchain-ts @langchain/core
 ```ts
 import { createChat } from "@cgaravitoq/open-langchain-ts";
 
-const free = createChat({ provider: "opencode", model: "deepseek-v4-flash-free" }); // no key
-const go = createChat({ provider: "opencode-go", model: "glm-5", apiKey: "..." });
+const free = createChat({ provider: "opencode", model: "nemotron-3.5-lightning-free" }); // no key
+const go = createChat({ provider: "opencode-go", model: "minimax-m3", apiKey: "..." });
 const codex = createChat({ provider: "openai-codex", model: "gpt-5.3-codex-spark" });
 const claude = createChat({ provider: "claude-code", model: "claude-sonnet-4-6" });
 ```
@@ -88,8 +88,8 @@ twin's `codex-login`). Models: `gpt-5.3-codex-spark`, `gpt-5.4`, `gpt-5.4-mini`,
 ```ts
 import { ChatOpencode } from "@cgaravitoq/open-langchain-ts/opencode";
 
-const free = new ChatOpencode({ model: "deepseek-v4-flash-free" }); // no key
-const paid = new ChatOpencode({ model: "glm-5" }); // OPENCODE_API_KEY or apiKey
+const free = new ChatOpencode({ model: "nemotron-3.5-lightning-free" }); // no key
+const go = new ChatOpencode({ model: "minimax-m3", tier: "go" }); // OPENCODE_API_KEY or apiKey
 ```
 
 ## Notes
