@@ -122,6 +122,12 @@ describe("model-config", () => {
     expect(findClaudeCodeModel("claude-fable-5-1")?.cost.cacheRead).toBe(0.25);
     expect(findClaudeCodeModel("claude-fable-5-1")?.maxTokens).toBe(128000);
     expect(findClaudeCodeModel("claude-sonnet-5")?.reasoning).toBe(true);
+    expect(findClaudeCodeModel("claude-sonnet-5")?.cost).toEqual({
+      input: 2,
+      output: 10,
+      cacheRead: 0.2,
+      cacheWrite: 2.5,
+    });
   });
 });
 
