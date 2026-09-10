@@ -15,8 +15,8 @@ export type ChatOpencodeFields = Omit<ChatOpenAIFields, "configuration"> & {
   tier?: "zen" | "go";
 };
 
-// ChatOpenAI prepends its own user-agent, so the client identity is set at the
-// fetch layer. The free tier is anonymous: the Zen API accepts requests with no
+// @langchain/openai's getHeadersWithUserAgent prepends `langchainjs-openai/<version>`
+// to any User-Agent in defaultHeaders, so the client identity is set at the fetch layer. The free tier is anonymous: the Zen API accepts requests with no
 // Authorization header, but the OpenAI SDK always derives `Authorization: Bearer
 // <apiKey>` and won't drop it via a null default header, so strip it here too.
 const zenFetch = (stripAuth: boolean) =>
